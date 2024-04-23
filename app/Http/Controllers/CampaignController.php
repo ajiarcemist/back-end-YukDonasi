@@ -11,7 +11,8 @@ class CampaignController extends Controller
 {
     //
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $campaigns = Campaign::get();
 
         return response([
