@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class CampaignTransaction extends Model
 {
     use HasFactory;
+    protected $fillable = ['campaign_id', 'user_id', 'transaction_number', 'amount', 'status', 'confirmed_date', 'rejected_reason'];
 }

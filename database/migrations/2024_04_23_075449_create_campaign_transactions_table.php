@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('campaign_transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('campaign_id');
-            $table->string('user_id');
+            $table->foreignId('campaign_id');
+            $table->foreignId('user_id');
             $table->unsignedInteger('transaction_number');
             $table->unsignedInteger('amount');
             $table->string('status');
