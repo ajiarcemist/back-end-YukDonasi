@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CampaignListResource;
 use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ class CampaignController extends Controller
                 'message' => 'success get api campaigns',
                 'code' => Response::HTTP_OK,
             ],
-            'data' => $campaigns,
+            'data' => CampaignListResource::collection($campaigns),
         ], Response::HTTP_OK);
     }
 }
