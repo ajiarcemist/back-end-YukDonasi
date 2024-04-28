@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('campaigns')->group(function () {
     Route::get('/', [CampaignController::class, 'index']);
+    Route::get('/{id}', [CampaignController::class, 'detail']);
 });
 
 Route::prefix('users')->group(function () {
