@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -49,10 +51,26 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json([
+                'meta' => [
+                    'status' => 'failed',
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'message' => 'Wrong credentials',
+                ],
+                'data' => null,
+            ]);
         }
 
-        return $this->respondWithToken($token);
+        return response()->json([
+            'meta' => [
+                'status' => 'success',
+                'code' => Response::HTTP_OK,
+                'message' => 'Success Login',
+            ],
+            'data' => [
+                'token' => $token,
+            ],
+        ]);
     }
 
     /**
