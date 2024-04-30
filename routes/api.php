@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\CampaignTransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,11 +18,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 Route::prefix('campaigns')->group(function () {
     Route::get('/', [CampaignController::class, 'index']);
     Route::get('/{id}', [CampaignController::class, 'detail']);
+});
+
+Route::prefix('campaigntransactions')->group(function () {
+    Route::get('/', [CampaignTransactionController::class, 'index']);
+    Route::get('/{id}', [CampaignTransactionController::class, 'detail']);
 });
 
 Route::prefix('users')->group(function () {
