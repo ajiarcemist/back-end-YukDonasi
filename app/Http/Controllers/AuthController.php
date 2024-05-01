@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,8 +17,9 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'me']]);
     }
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -27,25 +27,45 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
         ]);
+
         if ($validator->fails()) {
-            return response()->json($validator->messages());
+            return response()->json([
+                'meta' => [
+                    'status' => 'failed',
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'message' => 'Validation Error',
+                ],
+                'data' => $validator->messages(),
+            ]);
         }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
         if ($user) {
-            return response()->json(['message' => 'Pendaftaran Berhasil']);
+            return response()->json([
+                'meta' => [
+                    'status' => 'success',
+                    'code' => Response::HTTP_CREATED,
+                    'message' => 'Registration Successful',
+                ],
+                'data' => null,
+            ]);
         } else {
-            return response()->json(['message' => 'Pendaftaran Gagal']);
+            return response()->json([
+                'meta' => [
+                    'status' => 'failed',
+                    'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'message' => 'Registration Failed',
+                ],
+                'data' => null,
+            ]);
         }
     }
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function login()
     {
         $credentials = request(['email', 'password']);
@@ -61,63 +81,53 @@ class AuthController extends Controller
             ]);
         }
 
+        return $this->respondWithToken($token, 'Success Login');
+    }
+
+    public function me()
+    {
         return response()->json([
             'meta' => [
                 'status' => 'success',
                 'code' => Response::HTTP_OK,
-                'message' => 'Success Login',
+                'message' => 'User Details Retrieved',
             ],
-            'data' => [
-                'token' => $token,
-            ],
+            'data' => auth()->user(),
         ]);
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth()->user());
-    }
-
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function logout()
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'meta' => [
+                'status' => 'success',
+                'code' => Response::HTTP_OK,
+                'message' => 'Successfully logged out',
+            ],
+            'data' => null,
+        ]);
     }
 
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(auth()->refresh(), 'Token Refreshed');
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $message)
     {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'meta' => [
+                'status' => 'success',
+                'code' => Response::HTTP_OK,
+                'message' => $message,
+            ],
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60
+            ],
         ]);
     }
 }
