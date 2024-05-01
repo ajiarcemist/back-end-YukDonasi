@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('campaigns')->group(function () {
+Route::prefix('campaigns')->middleware('jwt.verify')->group(function () {
     Route::get('/', [CampaignController::class, 'index']);
     Route::get('/{id}', [CampaignController::class, 'detail']);
 });
 
-Route::prefix('campaigntransactions')->group(function () {
+Route::prefix('campaigntransactions')->middleware('jwt.verify')->group(function () {
     Route::get('/', [CampaignTransactionController::class, 'index']);
     Route::get('/{id}', [CampaignTransactionController::class, 'detail']);
 });
@@ -38,5 +38,5 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::get('me', [AuthController::class, 'me']);
+    Route::get('me', [AuthController::class, 'me'])->middleware('jwt.verify');
 });

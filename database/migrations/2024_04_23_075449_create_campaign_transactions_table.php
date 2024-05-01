@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('campaign_id');
             $table->foreignId('user_id');
-            $table->unsignedInteger('transaction_number');
+            $table->string('transaction_number');
             $table->unsignedInteger('amount');
             $table->string('status');
             $table->timestamp('confirmed_date');

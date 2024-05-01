@@ -22,4 +22,19 @@ class CampaignTransactionController extends Controller
             'data' => CampaignTransactionList::collection($campaigntransaction),
         ], Response::HTTP_OK);
     }
+
+    public function detail(Request $request, $id)
+    {
+
+        $campaignTransaction = CampaignTransaction::findOrFail($id);
+
+        return response([
+            'meta' => [
+                'status' => 'success',
+                'message' => 'success get api user',
+                'code' => Response::HTTP_OK,
+            ],
+            'data' => new CampaignTransactionList($campaignTransaction),
+        ], Response::HTTP_OK);
+    }
 }

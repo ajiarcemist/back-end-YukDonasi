@@ -24,4 +24,18 @@ class CampaignController extends Controller
             'data' => CampaignListResource::collection($campaigns),
         ], Response::HTTP_OK);
     }
+    public function detail(Request $request, $id)
+    {
+
+        $campaign = Campaign::findOrFail($id);
+
+        return response([
+            'meta' => [
+                'status' => 'success',
+                'message' => 'success get api campaign',
+                'code' => Response::HTTP_OK,
+            ],
+            'data' => new CampaignListResource($campaign),
+        ], Response::HTTP_OK);
+    }
 }
