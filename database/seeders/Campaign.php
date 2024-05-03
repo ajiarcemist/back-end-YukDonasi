@@ -20,14 +20,16 @@ class Campaign extends Seeder
                 'location' => 'yogyakarta',
                 'campaign_image_url' => 'campaign/default.jpg',
                 'description' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, reiciendis!',
-                'goal_amount' => 10000000
+                'goal_amount' => 10000000,
+                'precentage_value' => 25
             ],
             [
                 'campaign_name' => 'pembangunan masjid',
                 'location' => 'bali',
                 'campaign_image_url' => 'campaign/default.jpg',
                 'description' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, reiciendis!',
-                'goal_amount' => 20000000
+                'goal_amount' => 20000000,
+                'precentage_value' => 25
             ]
         ];
 

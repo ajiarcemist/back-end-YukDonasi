@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class CampaignListResource extends JsonResource
+class UserProfile extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +17,12 @@ class CampaignListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->campaign_name,
-            'location' => $this->location,
-            'campaign_image_url' => Storage::url($this->campaign_image_url),
+            'avatar_img_url' => Storage::url($this->avatar_img_url),
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone_number' => $this->phone_number,
+            'total_donation' => $this->total_donation,
+            'registered_date' => $this->created_at,
             'status' => $this->status,
         ];
     }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CampaignDetail;
 use App\Http\Resources\CampaignListResource;
+use App\Http\Resources\CampaignHistory;
+use App\Http\Resources\CampaignHistoryStatus;
 use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +38,35 @@ class CampaignController extends Controller
                 'message' => 'success get api campaign',
                 'code' => Response::HTTP_OK,
             ],
-            'data' => new CampaignListResource($campaign),
+            'data' => new CampaignDetail($campaign),
+        ], Response::HTTP_OK);
+    }
+    public function history(Request $request, $id)
+    {
+
+        $campaign = Campaign::findOrFail($id);
+
+        return response([
+            'meta' => [
+                'status' => 'success',
+                'message' => 'success get api campaign',
+                'code' => Response::HTTP_OK,
+            ],
+            'data' => new CampaignHistory($campaign),
+        ], Response::HTTP_OK);
+    }
+    public function historyStatus(Request $request, $id)
+    {
+
+        $campaign = Campaign::findOrFail($id);
+
+        return response([
+            'meta' => [
+                'status' => 'success',
+                'message' => 'success get api campaign',
+                'code' => Response::HTTP_OK,
+            ],
+            'data' => new CampaignHistoryStatus($campaign),
         ], Response::HTTP_OK);
     }
 }

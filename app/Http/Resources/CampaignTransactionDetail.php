@@ -4,9 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
-class CampaignListResource extends JsonResource
+class CampaignTransactionDetail extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,10 +16,13 @@ class CampaignListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->campaign_name,
-            'location' => $this->location,
-            'campaign_image_url' => Storage::url($this->campaign_image_url),
             'status' => $this->status,
+            'amount' => $this->amount,
+            'confirmed_date' => $this->confirmed_date,
+            'campaign_name' => $this->campaign->title,
+            'transacton_id' => $this->transaction_number,
+            'date' => $this->confirmed_date,
+            'rejected_reason' => $this->rejected_reason,
         ];
     }
 }

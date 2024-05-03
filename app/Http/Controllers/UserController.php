@@ -2,24 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserListResource;
+use App\Http\Resources\UserMe;
+use App\Http\Resources\UserProfile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response; // Added this line to import Response class
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function me(Request $request, $id)
     {
-        $users = User::get(); // Define $users array to avoid undefined variable error
+
+        $campaign = User::findOrFail($id);
 
         return response([
             'meta' => [
                 'status' => 'success',
-                'message' => 'success get api user',
+                'message' => 'success get api campaign',
                 'code' => Response::HTTP_OK,
             ],
-            'data' => UserListResource::collection($users),
+            'data' => new UserMe($campaign),
+        ], Response::HTTP_OK);
+    }
+    public function profile(Request $request, $id)
+    {
+
+        $campaign = User::findOrFail($id);
+
+        return response([
+            'meta' => [
+                'status' => 'success',
+                'message' => 'success get api campaign',
+                'code' => Response::HTTP_OK,
+            ],
+            'data' => new UserProfile($campaign),
         ], Response::HTTP_OK);
     }
 }

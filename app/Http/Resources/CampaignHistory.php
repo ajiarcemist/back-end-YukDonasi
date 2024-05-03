@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class CampaignListResource extends JsonResource
+class CampaignHistory extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,7 +20,7 @@ class CampaignListResource extends JsonResource
             'title' => $this->campaign_name,
             'location' => $this->location,
             'campaign_image_url' => Storage::url($this->campaign_image_url),
-            'status' => $this->status,
+
         ];
     }
 }
