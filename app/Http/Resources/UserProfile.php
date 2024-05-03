@@ -16,7 +16,6 @@ class UserProfile extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
             'avatar_img_url' => Storage::url($this->avatar_img_url),
             'name' => $this->name,
             'email' => $this->email,

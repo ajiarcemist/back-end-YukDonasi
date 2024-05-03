@@ -15,14 +15,10 @@ class CampaignTransactionList extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'campaign_id' => $this->campaign_id,
-            'user_id' => $this->user_id,
-            'transaction_number' => $this->transaction_number,
-            'amount' => $this->amount,
+            'title' => $this->campaign->title,
+            'location' => $this->campaign->location,
+            'campaign_img_url' => $this->campaign->campaign_img_url,
             'status' => $this->status,
-            'confirmed_date' => $this->confirmed_date,
-            'rejected_reason' => $this->rejected_reason,
         ];
     }
 }

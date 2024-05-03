@@ -16,7 +16,6 @@ class CampaignHistoryStatus extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
             'title' => $this->campaign_name,
             'location' => $this->location,
             'campaign_image_url' => Storage::url($this->campaign_image_url),

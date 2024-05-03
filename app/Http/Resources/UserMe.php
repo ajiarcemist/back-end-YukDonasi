@@ -16,7 +16,6 @@ class UserMe extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
             'name' => $this->name,
             'avatar_url' => Storage::url($this->avatar_img_url),
         ];

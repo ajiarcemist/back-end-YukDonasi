@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CampaignController extends Controller
 {
-    //
+
 
     public function index(Request $request)
     {
@@ -53,20 +53,6 @@ class CampaignController extends Controller
                 'code' => Response::HTTP_OK,
             ],
             'data' => new CampaignHistory($campaign),
-        ], Response::HTTP_OK);
-    }
-    public function historyStatus(Request $request, $id)
-    {
-
-        $campaign = Campaign::findOrFail($id);
-
-        return response([
-            'meta' => [
-                'status' => 'success',
-                'message' => 'success get api campaign',
-                'code' => Response::HTTP_OK,
-            ],
-            'data' => new CampaignHistoryStatus($campaign),
         ], Response::HTTP_OK);
     }
 }

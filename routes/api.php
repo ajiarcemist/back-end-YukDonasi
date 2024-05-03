@@ -22,10 +22,10 @@ Route::prefix('campaigns')->middleware('jwt.verify')->group(function () {
     Route::get('/', [CampaignController::class, 'index']);
     Route::get('/{id}', [CampaignController::class, 'detail']);
     Route::get('/history/{id}', [CampaignController::class, 'history']);
-    Route::get('/history-status/{id}', [CampaignController::class, 'historyStatus']);
 });
 
 Route::prefix('campaigntransactions')->middleware('jwt.verify')->group(function () {
+    Route::get('/', [CampaignTransactionController::class, 'index']);
     Route::get('/{id}', [CampaignTransactionController::class, 'detail']);
 });
 

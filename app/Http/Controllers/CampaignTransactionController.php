@@ -3,12 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CampaignTransactionDetail;
+use App\Http\Resources\CampaignTransactionList;
 use App\Models\CampaignTransaction;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CampaignTransactionController extends Controller
 {
+    public function index(Request $request)
+    {
+        $campaigns = CampaignTransaction::get();
+
+        return response([
+            'meta' => [
+                'status' => 'success',
+                'message' => 'success get api campaigns',
+                'code' => Response::HTTP_OK,
+            ],
+            'data' => CampaignTransactionList::collection($campaigns),
+        ], Response::HTTP_OK);
+    }
     public function detail(Request $request, $id)
     {
 
