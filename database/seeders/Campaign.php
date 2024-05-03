@@ -21,7 +21,6 @@ class Campaign extends Seeder
                 'campaign_image_url' => 'campaign/default.jpg',
                 'description' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, reiciendis!',
                 'goal_amount' => 10000000,
-                'precentage_value' => 25
             ],
             [
                 'campaign_name' => 'pembangunan masjid',
@@ -29,7 +28,6 @@ class Campaign extends Seeder
                 'campaign_image_url' => 'campaign/default.jpg',
                 'description' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, reiciendis!',
                 'goal_amount' => 20000000,
-                'precentage_value' => 25
             ]
         ];
 

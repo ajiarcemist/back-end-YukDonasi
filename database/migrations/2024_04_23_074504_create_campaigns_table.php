@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('campaign_image_url');
             $table->text('description');
             $table->unsignedInteger('goal_amount');
-            $table->unsignedInteger('precentage_value');
             $table->timestamps();
         });
     }
