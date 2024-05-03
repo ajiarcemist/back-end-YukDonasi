@@ -20,7 +20,9 @@ class CampaignListResource extends JsonResource
             'title' => $this->campaign_name,
             'location' => $this->location,
             'campaign_image_url' => Storage::url($this->campaign_image_url),
-            'status' => $this->status,
+            'goal_amount' => $this->goal_amount,
+            'current_amount' => $this->goal_amount - ($this->donation_sum_amount),
+            'percentage_value' => ($this->donation_sum_amount/$this->goal_amount) * 100,
         ];
     }
 }

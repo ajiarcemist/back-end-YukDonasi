@@ -16,7 +16,7 @@ class CampaignController extends Controller
 
     public function index(Request $request)
     {
-        $campaigns = Campaign::get();
+        $campaigns = Campaign::with('donation')->withSum('donation', 'amount')->get();
 
         return response([
             'meta' => [
