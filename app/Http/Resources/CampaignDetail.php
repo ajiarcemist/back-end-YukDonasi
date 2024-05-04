@@ -22,8 +22,8 @@ class CampaignDetail extends JsonResource
             'campaign_image_url' => Storage::url($this->campaign_image_url),
             'description' => $this->description,
             'goal_amount' => $this->goal_amount,
-            'current_amount' => $this->current_amount,
-            'precentage_value' => $this->precentage_value
+            'current_amount' => $this->goal_amount - ($this->donation_sum_amount),
+            'precentage_value' => ($this->donation_sum_amount / $this->goal_amount) * 100,
         ];
     }
 }

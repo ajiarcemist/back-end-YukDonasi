@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CampaignDetail;
 use App\Http\Resources\CampaignListResource;
 use App\Http\Resources\CampaignHistory;
-use App\Http\Resources\CampaignHistoryStatus;
 use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +29,7 @@ class CampaignController extends Controller
     public function detail(Request $request, $id)
     {
 
-        $campaign = Campaign::findOrFail($id);
+        $campaign = Campaign::with('donation')->withSum('donation', 'amount')->findOrFail($id);
 
         return response([
             'meta' => [
