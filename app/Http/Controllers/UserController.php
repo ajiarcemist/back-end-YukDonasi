@@ -24,10 +24,9 @@ class UserController extends Controller
             'data' => new UserMe($campaign),
         ], Response::HTTP_OK);
     }
-    public function profile(Request $request, $id)
+    public function profile(Request $request)
     {
-
-        $campaign = User::findOrFail($id);
+        $campaign = User::findOrFail(auth()->user()->id);
 
         return response([
             'meta' => [

@@ -30,8 +30,8 @@ Route::prefix('campaigntransactions')->middleware('jwt.verify')->group(function 
 });
 
 Route::prefix('users')->middleware('jwt.verify')->group(function () {
-    Route::get('/{id}', [UserController::class, 'me']);
-    Route::get('/profile/{id}', [UserController::class, 'profile']);
+    // Route::get('/{id}', [UserController::class, 'me']);
+    Route::get('/profile', [UserController::class, 'profile']);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
