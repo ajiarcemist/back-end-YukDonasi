@@ -38,6 +38,8 @@ class DonationController extends Controller
 
         $donationData = $request->all();
         $donationData['transaction_number'] = $transactionNumber;
+        $donationData['status'] = $request->input('status', 'pending');
+        $donationData['confirmed_date'] = $request->input('confirmed_date', null);
         $donation = CampaignTransaction::create($donationData);
 
 

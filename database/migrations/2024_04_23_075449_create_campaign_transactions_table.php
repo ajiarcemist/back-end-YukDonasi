@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('transaction_number');
             $table->unsignedInteger('amount');
             $table->string('status');
-            $table->timestamp('confirmed_date');
+            $table->timestamp('confirmed_date')->nullable();
             $table->text('rejected_reason')->nullable();
             $table->timestamps();
         });

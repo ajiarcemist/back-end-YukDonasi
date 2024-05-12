@@ -12,12 +12,10 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
-        $user = auth()->user(); // Retrieve authenticated user
+        $user = auth()->user();
 
-        // Calculate total donation amount
         $totalDonation = CampaignTransaction::where('user_id', $user->id)->sum('amount');
 
-        // Create a new instance of UserProfile resource with the user's data and total donation
         $profile = new UserProfile($user);
         $profile->total_donation = $totalDonation;
 
