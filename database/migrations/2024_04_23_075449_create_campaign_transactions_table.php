@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('amount');
             $table->string('status');
             $table->timestamp('confirmed_date');
-            $table->text('rejected_reason');
+            $table->text('rejected_reason')->nullable();
             $table->timestamps();
         });
     }

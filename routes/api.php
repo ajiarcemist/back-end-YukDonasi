@@ -6,6 +6,8 @@ use App\Http\Controllers\CampaignTransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DonationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,9 @@ Route::prefix('campaigntransactions')->middleware('jwt.verify')->group(function 
 Route::prefix('users')->middleware('jwt.verify')->group(function () {
     // Route::get('/{id}', [UserController::class, 'me']);
     Route::get('/profile', [UserController::class, 'profile']);
+});
+Route::prefix('donate')->middleware('jwt.verify')->group(function () {
+    route::post('/', [DonationController::class, 'makeDonation']);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {

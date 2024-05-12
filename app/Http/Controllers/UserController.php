@@ -2,39 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserMe;
+use App\Models\CampaignTransaction;
 use App\Http\Resources\UserProfile;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response; // Added this line to import Response class
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function me(Request $request, $id)
-    {
 
-        $campaign = User::findOrFail($id);
-
-        return response([
-            'meta' => [
-                'status' => 'success',
-                'message' => 'success get api campaign',
-                'code' => Response::HTTP_OK,
-            ],
-            'data' => new UserMe($campaign),
-        ], Response::HTTP_OK);
-    }
     public function profile(Request $request)
     {
-        $campaign = User::findOrFail(auth()->user()->id);
+        $user = auth()->user(); // Retrieve authenticated user
 
-        return response([
+        // Calculate total donation amount
+        $totalDonation = CampaignTransaction::where('user_id', $user->id)->sum('amount');
+
+        // Create a new instance of UserProfile resource with the user's data and total donation
+        $profile = new UserProfile($user);
+        $profile->total_donation = $totalDonation;
+
+        return response()->json([
             'meta' => [
                 'status' => 'success',
-                'message' => 'success get api campaign',
+                'message' => 'success get user profile',
                 'code' => Response::HTTP_OK,
             ],
-            'data' => new UserProfile($campaign),
+            'data' => $profile,
         ], Response::HTTP_OK);
     }
 }

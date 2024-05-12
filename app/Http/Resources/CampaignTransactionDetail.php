@@ -19,7 +19,7 @@ class CampaignTransactionDetail extends JsonResource
             'status' => $this->status,
             'amount' => $this->amount,
             'confirmed_date' => $this->confirmed_date,
-            'title' => $this->campaign->title,
+            'title' => $this->campaign->campaign_name,
             'transacton_id' => $this->transaction_number,
             'date' => $this->confirmed_date,
             'rejected_reason' => $this->rejected_reason,
