@@ -8,15 +8,13 @@ use App\Http\Resources\ValidationDonation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
-
+use Illuminate\Support\Facades\Auth;
 
 class DonationController extends Controller
 {
     public function makeDonation(Request $request)
     {
-
-        $validator = Validator::make($request->all(), ValidationDonation::donationRules());
-
+        $validator = Validator::make($request->all(), $this->getDonationRulesWithoutUserId());
 
         if ($validator->fails()) {
             return response()->json([
@@ -29,19 +27,19 @@ class DonationController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        $userId = Auth::id();
 
         $lastTransaction = CampaignTransaction::orderBy('id', 'desc')->first();
         $lastNumber = $lastTransaction ? (int)substr($lastTransaction->transaction_number, 4) : 0;
         $nextNumber = str_pad($lastNumber + 1, 7, '0', STR_PAD_LEFT);
         $transactionNumber = 'INV-' . $nextNumber;
 
-
         $donationData = $request->all();
         $donationData['transaction_number'] = $transactionNumber;
         $donationData['status'] = $request->input('status', 'pending');
         $donationData['confirmed_date'] = $request->input('confirmed_date', null);
+        $donationData['user_id'] = $userId;
         $donation = CampaignTransaction::create($donationData);
-
 
         return response()->json([
             'meta' => [
@@ -51,5 +49,12 @@ class DonationController extends Controller
             ],
             'data' => new CampaignTransactionDetail($donation),
         ], Response::HTTP_CREATED);
+    }
+
+    private function getDonationRulesWithoutUserId(): array
+    {
+        $rules = ValidationDonation::donationRules();
+        unset($rules['user_id']);
+        return $rules;
     }
 }
