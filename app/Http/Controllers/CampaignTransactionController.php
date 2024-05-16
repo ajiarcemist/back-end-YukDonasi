@@ -13,7 +13,6 @@ class CampaignTransactionController extends Controller
     public function index(Request $request)
     {
         $campaigns = CampaignTransaction::with('campaign')->get();
-        dd($campaigns);
 
         return response([
             'meta' => [
