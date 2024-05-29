@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             [
                 Campaign::class,
                 UsersTableSeeder::class,
-                CampaignTransactionSeeder::class
+                // CampaignTransactionSeeder::class
             ]
         );
     }
