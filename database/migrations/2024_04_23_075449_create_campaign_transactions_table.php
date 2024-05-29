@@ -20,6 +20,10 @@ class CreateCampaignTransactionsTable extends Migration
             $table->string('transaction_number')->unique();
             $table->integer('amount');
             $table->string('status');
+            $table->json('request_body');
+            $table->json('response');
+            $table->string('payment_link');
+            $table->json('callback');
             $table->timestamp('confirmed_date')->nullable();
             $table->text('rejected_reason')->nullable();
             $table->timestamps();

@@ -17,6 +17,10 @@ class CampaignTransaction extends Model
         'status',
         'confirmed_date',
         'rejected_reason',
+        'request_body',
+        'response',
+        'payment_link',
+        'callback'
     ];
 
     protected $casts = [
