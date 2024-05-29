@@ -21,9 +21,9 @@ class CreateCampaignTransactionsTable extends Migration
             $table->integer('amount');
             $table->string('status');
             $table->json('request_body');
-            $table->json('response');
-            $table->string('payment_link');
-            $table->json('callback');
+            $table->json('response')->nullable();
+            $table->string('payment_link')->nullable();
+            $table->json('callback')->nullable();
             $table->timestamp('confirmed_date')->nullable();
             $table->text('rejected_reason')->nullable();
             $table->timestamps();
