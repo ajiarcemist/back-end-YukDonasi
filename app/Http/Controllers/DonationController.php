@@ -68,6 +68,7 @@ class DonationController extends Controller
 
         $donationData['request_body'] = json_encode($midtransResponse['data']);
         $donationData['payment_link'] = $midtransResponse['data']['payment_url'];
+        $donationData['response'] = json_encode($midtransResponse['data']);
 
         // Buat donasi baru
         $donation = CampaignTransaction::create($donationData);
