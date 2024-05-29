@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CampaignTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response;
 
 class MidtransController extends Controller
 {
@@ -33,6 +35,45 @@ class MidtransController extends Controller
             'status' => 'success',
             'data' => $response->json(),
         ];
+    }
+
+    public function callback(Request $request) {
+
+        // case credit card
+        if($request->payment_type == 'credit_card') {
+            if($request->transaction_status == 'capture') {
+                // berhasil
+                $campaignTransaction = CampaignTransaction::where('transaction_number', $request->order_id)->first();
+
+                if($campaignTransaction) {
+                    $campaignTransaction->status = 'success';
+                    $campaignTransaction->callback = json_encode($request->all());
+                    $campaignTransaction->confirmed_date = \Carbon\Carbon::now();
+                }
+            }
+        }
+
+
+
+        // case lainnya
+        
+        // kalo ada pembayaran lain tulis disini
+        
+        // end
+
+        
+
+
+        // last step
+        $campaignTransaction->save();
+        return response()->json([
+            'meta' => [
+                'status' => 'success',
+                'message' => 'Callback Success',
+                'code' => Response::HTTP_OK,
+            ],
+            'data' => null,
+        ], Response::HTTP_OK);
     }
 
  }
