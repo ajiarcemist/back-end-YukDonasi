@@ -15,7 +15,6 @@ class DonationController extends Controller
     public function makeDonation(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
             'amount' => 'required|numeric|min:0',
             'campaign_id' => 'required|exists:campaigns,id',
         ]);
@@ -37,7 +36,7 @@ class DonationController extends Controller
         $lastTransaction = CampaignTransaction::orderBy('id', 'desc')->first();
         $lastNumber = $lastTransaction ? (int)substr($lastTransaction->transaction_number, 4) : 0;
         $nextNumber = str_pad($lastNumber + 1, 7, '0', STR_PAD_LEFT);
-        $transactionNumber = 'INV-' . $nextNumber;
+        $transactionNumber = 'INV-' . $nextNumber . \Illuminate\Support\Str::random(3);
 
         $donationData = [
             'campaign_id' => $request->input('campaign_id'),
@@ -48,6 +47,27 @@ class DonationController extends Controller
             'rejected_reason' => null,
             'user_id' => $userId,
         ];
+
+        // send payment data to midtrans
+        $midtransController = new MidtransController();
+        $midtransResponse = $midtransController->createPaymentLink([
+            'transaction_number' => $transactionNumber,
+            'amount' => $request->input('amount'),
+        ]);
+
+        if($midtransResponse['status'] == 'failed') {
+            return response()->json([
+                'meta' => [
+                    'status' => 'failed',
+                    'message' => 'Donation failed',
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                ],
+                'data' => null,
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $donationData['request_body'] = json_encode($midtransResponse['data']);
+        $donationData['payment_link'] = $midtransResponse['data']['payment_url'];
 
         // Buat donasi baru
         $donation = CampaignTransaction::create($donationData);
