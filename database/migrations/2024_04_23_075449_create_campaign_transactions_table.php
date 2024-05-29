@@ -4,19 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateCampaignTransactionsTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('campaign_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('campaign_id');
-            $table->foreignId('user_id');
-            $table->string('transaction_number');
-            $table->unsignedInteger('amount');
+            $table->foreignId('campaign_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('transaction_number')->unique();
+            $table->integer('amount');
             $table->string('status');
             $table->timestamp('confirmed_date')->nullable();
             $table->text('rejected_reason')->nullable();
@@ -26,9 +28,11 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('campaign_transactions');
     }
-};
+}

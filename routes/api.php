@@ -27,8 +27,8 @@ Route::prefix('campaigns')->middleware('jwt.verify')->group(function () {
 });
 
 Route::prefix('campaigntransactions')->middleware('jwt.verify')->group(function () {
-    Route::get('/', [CampaignTransactionController::class, 'index']);
-    Route::get('/{id}', [CampaignTransactionController::class, 'detail']);
+    Route::get('/{id}', [CampaignTransactionController::class, 'index']);
+    Route::get('/detail/{id}', [CampaignTransactionController::class, 'detail']);
 });
 
 Route::prefix('users')->middleware('jwt.verify')->group(function () {

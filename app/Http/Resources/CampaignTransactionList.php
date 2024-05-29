@@ -16,6 +16,7 @@ class CampaignTransactionList extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'title' => $this->campaign->campaign_name,
             'location' => $this->campaign->location,
             'campaign_img_url' => Storage::url($this->campaign->campaign_image_url),

@@ -15,6 +15,7 @@ class CampaignDetail extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $currentAmount = $this->donation_sum_amount > 0 ? $this->donation_sum_amount : 0;
         return [
             'id' => $this->id,
             'title' => $this->campaign_name,
@@ -22,8 +23,8 @@ class CampaignDetail extends JsonResource
             'campaign_image_url' => Storage::url($this->campaign_image_url),
             'description' => $this->description,
             'goal_amount' => $this->goal_amount,
-            'current_amount' => (int) $this->donation_sum_amount ? $this->donation_sum_amount : 0,
-            'precentage_value' => ($this->donation_sum_amount / $this->goal_amount) * 100,
+            'current_amount' => $currentAmount,
+            'percentage_value' => ($this->goal_amount > 0) ? ($currentAmount / $this->goal_amount) * 100 : 0,
         ];
     }
 }

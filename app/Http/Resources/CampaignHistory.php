@@ -17,10 +17,9 @@ class CampaignHistory extends JsonResource
     {
         return [
 
-            'title' => $this->campaign_name,
-            'location' => $this->location,
-            'campaign_image_url' => Storage::url($this->campaign_image_url),
-
+            'title' => $this->campaign->campaign_name,
+            'location' => $this->campaign->location,
+            'campaign_image_url' => Storage::url($this->campaign->campaign_image_url),
         ];
     }
 }

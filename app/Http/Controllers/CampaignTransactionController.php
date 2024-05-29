@@ -10,19 +10,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CampaignTransactionController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $userId)
     {
-        $campaigns = CampaignTransaction::with('campaign')->get();
+        $transactions = CampaignTransaction::where('user_id', $userId)->with('campaign')->get();
 
         return response([
             'meta' => [
                 'status' => 'success',
-                'message' => 'success get api campaigns',
+                'message' => 'success get api campaign history',
                 'code' => Response::HTTP_OK,
             ],
-            'data' => CampaignTransactionList::collection($campaigns),
+            'data' => CampaignTransactionList::collection($transactions),
         ], Response::HTTP_OK);
     }
+
     public function detail(Request $request, $id)
     {
 

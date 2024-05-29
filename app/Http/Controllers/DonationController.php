@@ -14,8 +14,13 @@ class DonationController extends Controller
 {
     public function makeDonation(Request $request)
     {
-        $validator = Validator::make($request->all(), $this->getDonationRulesWithoutUserId());
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'amount' => 'required|numeric|min:0',
+            'campaign_id' => 'required|exists:campaigns,id',
+        ]);
 
+        // Jika validasi gagal
         if ($validator->fails()) {
             return response()->json([
                 'meta' => [
@@ -34,13 +39,20 @@ class DonationController extends Controller
         $nextNumber = str_pad($lastNumber + 1, 7, '0', STR_PAD_LEFT);
         $transactionNumber = 'INV-' . $nextNumber;
 
-        $donationData = $request->all();
-        $donationData['transaction_number'] = $transactionNumber;
-        $donationData['status'] = $request->input('status', 'pending');
-        $donationData['confirmed_date'] = $request->input('confirmed_date', null);
-        $donationData['user_id'] = $userId;
+        $donationData = [
+            'campaign_id' => $request->input('campaign_id'),
+            'amount' => $request->input('amount'),
+            'transaction_number' => $transactionNumber,
+            'status' => 'pending',
+            'confirmed_date' => null,
+            'rejected_reason' => null,
+            'user_id' => $userId,
+        ];
+
+        // Buat donasi baru
         $donation = CampaignTransaction::create($donationData);
 
+        // Kirim respons JSON
         return response()->json([
             'meta' => [
                 'status' => 'success',
@@ -49,12 +61,5 @@ class DonationController extends Controller
             ],
             'data' => new CampaignTransactionDetail($donation),
         ], Response::HTTP_CREATED);
-    }
-
-    private function getDonationRulesWithoutUserId(): array
-    {
-        $rules = ValidationDonation::donationRules();
-        unset($rules['user_id']);
-        return $rules;
     }
 }

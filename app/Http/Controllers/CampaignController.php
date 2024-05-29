@@ -6,6 +6,7 @@ use App\Http\Resources\CampaignDetail;
 use App\Http\Resources\CampaignListResource;
 use App\Http\Resources\CampaignHistory;
 use App\Models\Campaign;
+use App\Models\CampaignTransaction;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,18 +41,18 @@ class CampaignController extends Controller
             'data' => new CampaignDetail($campaign),
         ], Response::HTTP_OK);
     }
-    public function history(Request $request, $id)
-    {
 
-        $campaign = Campaign::findOrFail($id);
+    public function history(Request $request, $userId)
+    {
+        $transactions = CampaignTransaction::where('user_id', $userId)->with('campaign')->get();
 
         return response([
             'meta' => [
                 'status' => 'success',
-                'message' => 'success get api campaign',
+                'message' => 'success get api campaign history',
                 'code' => Response::HTTP_OK,
             ],
-            'data' => new CampaignHistory($campaign),
+            'data' => CampaignHistory::collection($transactions),
         ], Response::HTTP_OK);
     }
 }

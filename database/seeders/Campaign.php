@@ -16,18 +16,25 @@ class Campaign extends Seeder
         //  
         $campaigns = [
             [
-                'campaign_name' => 'pembangunan jalan',
-                'location' => 'yogyakarta',
-                'campaign_image_url' => 'campaign/default.jpg',
+                'campaign_name' => 'Pembangunan Jalan',
+                'location' => 'Yogyakarta',
+                'campaign_image_url' => 'campaign/highway.jpg',
                 'description' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, reiciendis!',
-                'goal_amount' => 10000000,
+                'goal_amount' => 100000000,
             ],
             [
-                'campaign_name' => 'pembangunan masjid',
-                'location' => 'bali',
-                'campaign_image_url' => 'campaign/default.jpg',
+                'campaign_name' => 'Pembangunan Masjid',
+                'location' => 'Bali',
+                'campaign_image_url' => 'campaign/cardImg.png',
                 'description' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, reiciendis!',
-                'goal_amount' => 20000000,
+                'goal_amount' => 200000000,
+            ],
+            [
+                'campaign_name' => 'Pembangunan Sekolah',
+                'location' => 'bali',
+                'campaign_image_url' => 'campaign/sekolah.jpeg',
+                'description' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, reiciendis!',
+                'goal_amount' => 200000000,
             ]
         ];
 
