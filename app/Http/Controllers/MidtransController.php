@@ -40,10 +40,12 @@ class MidtransController extends Controller
     public function callback(Request $request) {
 
         // case credit card
+        $orderId = explode($request->order_id, '-');
+        
         if($request->payment_type == 'credit_card') {
             if($request->transaction_status == 'capture') {
                 // berhasil
-                $campaignTransaction = CampaignTransaction::where('transaction_number', $request->order_id)->first();
+                $campaignTransaction = CampaignTransaction::where('transaction_number', $orderId[0])->first();
 
                 if($campaignTransaction) {
                     $campaignTransaction->status = 'success';
@@ -53,7 +55,7 @@ class MidtransController extends Controller
             }
         } else {
             if($request->transaction_status == 'settlement') {
-                $campaignTransaction = CampaignTransaction::where('transaction_number', $request->order_id)->first();
+                $campaignTransaction = CampaignTransaction::where('transaction_number', $orderId[0])->first();
 
                 if($campaignTransaction) {
                     $campaignTransaction->status = 'success';
