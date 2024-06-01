@@ -35,15 +35,6 @@ class JwtMiddleware
                     ],
                     'data' => null,
                 ]);
-            } else {
-                return response()->json([
-                    'meta' => [
-                        'status' => 'TOKEN_NOT_FOUND',
-                        'code' => Response::HTTP_UNAUTHORIZED,
-                        'message' => 'Token Not Found',
-                    ],
-                    'data' => null,
-                ]);
             }
         }
 
