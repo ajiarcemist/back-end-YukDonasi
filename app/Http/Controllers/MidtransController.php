@@ -51,6 +51,16 @@ class MidtransController extends Controller
                     $campaignTransaction->confirmed_date = \Carbon\Carbon::now();
                 }
             }
+        } else {
+            if($request->transaction_status == 'settlement') {
+                $campaignTransaction = CampaignTransaction::where('transaction_number', $request->order_id)->first();
+
+                if($campaignTransaction) {
+                    $campaignTransaction->status = 'success';
+                    $campaignTransaction->callback = json_encode($request->all());
+                    $campaignTransaction->confirmed_date = \Carbon\Carbon::now();
+                }
+            }
         }
 
 
