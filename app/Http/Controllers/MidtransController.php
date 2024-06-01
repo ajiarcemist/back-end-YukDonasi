@@ -40,18 +40,44 @@ class MidtransController extends Controller
     public function callback(Request $request) {
 
         // case credit card
-        $orderId = explode($request->order_id, '-');
+        $orderId = explode('-', $request->order_id);
+        $isSuccess = false;
+        $campaignTransaction = CampaignTransaction::where('transaction_number', $orderId[0])->first();
+        
+        if(!$campaignTransaction) {
+            return response()->json([
+                'meta' => [
+                    'status' => 'failed',
+                    'message' => 'transaction Not Found',
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                ],
+                'data' => null,
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        
+        if($campaignTransaction->status == 'success') {
+            return response()->json([
+                'meta' => [
+                    'status' => 'failed',
+                    'message' => 'Transaction has been process',
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                ],
+                'data' => null,
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        
+        
         
         if($request->payment_type == 'credit_card') {
             if($request->transaction_status == 'capture') {
                 // berhasil
-                $campaignTransaction = CampaignTransaction::where('transaction_number', $orderId[0])->first();
 
                 if($campaignTransaction) {
                     $campaignTransaction->status = 'success';
                     $campaignTransaction->callback = json_encode($request->all());
                     $campaignTransaction->confirmed_date = \Carbon\Carbon::now();
                 }
+                $isSuccess = true;
             }
         } else {
             if($request->transaction_status == 'settlement') {
@@ -62,22 +88,16 @@ class MidtransController extends Controller
                     $campaignTransaction->callback = json_encode($request->all());
                     $campaignTransaction->confirmed_date = \Carbon\Carbon::now();
                 }
+                $isSuccess = true;
             }
         }
 
 
 
-        // case lainnya
+        if($isSuccess) {
+            $campaignTransaction->save();
+        }
         
-        // kalo ada pembayaran lain tulis disini
-        
-        // end
-
-        
-
-
-        // last step
-        $campaignTransaction->save();
         return response()->json([
             'meta' => [
                 'status' => 'success',

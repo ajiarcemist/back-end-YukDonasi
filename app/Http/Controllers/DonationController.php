@@ -48,8 +48,6 @@ class DonationController extends Controller
             'user_id' => $userId,
         ];
 
-        return $transactionNumber;
-
         // send payment data to midtrans
         $midtransController = new MidtransController();
         $midtransResponse = $midtransController->createPaymentLink([
