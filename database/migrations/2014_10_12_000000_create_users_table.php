@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedInteger('phone_number')->nullable();
+            $table->string('phone_number')->nullable();
             $table->enum('status', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->string('avatar_img_url')->nullable();
             $table->rememberToken();

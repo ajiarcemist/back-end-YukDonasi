@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CampaignTransactionDetail;
 use App\Models\CampaignTransaction;
-use App\Http\Resources\ValidationDonation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class DonationController extends Controller
 {
@@ -32,11 +32,9 @@ class DonationController extends Controller
         }
 
         $userId = Auth::id();
+        $user = auth()->user();
 
-        $lastTransaction = CampaignTransaction::orderBy('id', 'desc')->first();
-        $lastNumber = $lastTransaction ? (int)substr($lastTransaction->transaction_number, 4) : 0;
-        $nextNumber = str_pad($lastNumber + 1, 7, '0', STR_PAD_LEFT);
-        $transactionNumber = 'INV' . $nextNumber . \Illuminate\Support\Str::random(3);
+        $transactionNumber = 'INV' + '-' . Str::random(7);
 
         $donationData = [
             'campaign_id' => $request->input('campaign_id'),
@@ -53,9 +51,12 @@ class DonationController extends Controller
         $midtransResponse = $midtransController->createPaymentLink([
             'transaction_number' => $transactionNumber,
             'amount' => $request->input('amount'),
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone_number' => $user->phone_number,
         ]);
 
-        if($midtransResponse['status'] == 'failed') {
+        if ($midtransResponse['status'] == 'failed') {
             return response()->json([
                 'meta' => [
                     'status' => 'failed',

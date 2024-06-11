@@ -23,7 +23,7 @@ class CampaignTransactionDetail extends JsonResource
             'transacton_id' => $this->transaction_number,
             'date' => $this->confirmed_date,
             'rejected_reason' => $this->rejected_reason,
-            'patment_link' => $this->payment_link,
+            'payment_link' => $this->payment_link,
         ];
     }
 }

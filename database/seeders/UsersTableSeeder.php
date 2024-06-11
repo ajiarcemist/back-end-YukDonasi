@@ -18,14 +18,16 @@ class UsersTableSeeder extends Seeder
                 'email' => 'admin@admin.com',
                 'password' => bcrypt('password'),
                 'status' => 'Aktif',
-                'avatar_img_url' => 'user/avatar.png',
+                'avatar_img_url' => 'campaign/avatar.png',
+                'phone_number' => '6281329890079'
             ],
             [
                 'name' => 'user1',
                 'email' => 'user1@user.com',
                 'password' => bcrypt('password'),
                 'status' => 'Aktif',
-                'avatar_img_url' => 'user/avatar.png',
+                'avatar_img_url' => 'campaign/avatar.png',
+                'phone_number' => '6284092859301'
             ],
         ];
         foreach ($users as $user) {
